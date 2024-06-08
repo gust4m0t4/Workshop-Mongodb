@@ -6,13 +6,16 @@ import com.metatron.workshopmongo.dto.UserDTO;
 import com.metatron.workshopmongo.services.PostService;
 import com.metatron.workshopmongo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.metatron.workshopmongo.resources.util.URL;
 
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 
 @RestController
@@ -29,6 +32,14 @@ public class PostResource {
         Post obj = services.findById(id);
 
         return ResponseEntity.ok().body(obj);
+    }
+    @RequestMapping(value = "/titlesearch", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text) {
+        text = URL.decodeParam(text);
+        List<Post> list = services.findByTitle(text);
+
+
+        return ResponseEntity.ok().body(list);
     }
 
 }
